@@ -8,36 +8,36 @@ import uuid
 
 load_dotenv()
 
-# Kafka config
+
 conf = {
     'bootstrap.servers': os.getenv("BOOTSTRAP_SERVERS"),
     'security.protocol': 'SASL_SSL',
     'sasl.mechanisms': 'PLAIN',
     'sasl.username': os.getenv("SASL_USERNAME"),
     'sasl.password': os.getenv("SASL_PASSWORD"),
-    'group.id': 'meu-grupo-consumer',
+    'group.id': 'consumer',
     'auto.offset.reset': 'earliest'
 }
 
 consumer = Consumer(conf)
 consumer.subscribe(['transacoes'])
 
-# S3 config
+
 S3_BUCKET = os.getenv("S3_BUCKET")
 
-s3 = boto3.client('s3')  # assume que suas credenciais AWS já estão configuradas
+s3 = boto3.client('s3') 
 
 def salvar_no_s3(dados):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    nome_arquivo = f"transacoes/{timestamp}_{uuid.uuid4().hex}.json"
+    arquivo = f"transacoes/{timestamp}_{uuid.uuid4().hex}.json"
     conteudo = json.dumps(dados)
     
     response = s3.put_object(
         Bucket=S3_BUCKET,
-        Key=nome_arquivo,
+        Key=arquivo,
         Body=conteudo
     )
-    print(f"Dados salvos em s3://{S3_BUCKET}/{nome_arquivo}")
+    print(f"Dados salvos em s3://{S3_BUCKET}/{arquivo}")
 
 
 try:
