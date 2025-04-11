@@ -1,0 +1,4 @@
+confluent-kafka
+faker
+python-dotenv
+boto3
