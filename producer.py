@@ -21,9 +21,9 @@ producer = Producer(conf)
 
 def delivery_report(err, msg):
     if err is not None:
-        print(f'❌ Erro ao entregar mensagem: {err}')
+        print(f'Erro ao entregar mensagem: {err}')
     else:
-        print(f'✅ Mensagem entregue a {msg.topic()} [{msg.partition()}]')
+        print(f'Mensagem entregue a {msg.topic()} [{msg.partition()}]')
 
 while True:
     transacao = {
